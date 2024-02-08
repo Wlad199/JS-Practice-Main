@@ -56,10 +56,7 @@ initialTab.classList.add('active')
 renderTabContentId(activeTabId)
 
 // Навешиваем события по клику
-for (let i = 0; i < tabs.length; i++) {
-	const tab = tabs[i]
-	tab.addEventListener('click', clickHandler)
-}
+addClickListeners(tabs, clickHandler)
 
 function clickHandler(event) {
 	// Проверяем какой таб выбран, убраем класс, добавляем выбраному, получаем активный в конст
@@ -87,36 +84,30 @@ function removeActiveTabContent() {
 }
 
 function renderGoods() {
-	return `
-		<div data-active-tab-content='true' data-show-tab class="product-items">
-		<div class="product-item">
-				<img src="goods/html.png">
-			<div class="product-list">
-					<h3>Уроки по HTML</h3>
-						<p class="price">₽ 300</p>
-						<button class="button">В корзину</button>
-			</div>
-		</div>
 
-		<div class="product-item">
-				<img src="goods/css.png">
-			<div class="product-list">
-					<h3>Уроки по CSS</h3>
-						<p class="price">₽ 150</p>
-						<button class="button">В корзину</button>
-			</div>
-		</div>
+	// Создаем новый див и добав. ему аттрибуты и классы
+	const div = document.createElement('div');
+	div.dataset.activeTabContent = 'true';
+	div.className = 'product-items';
 
-		<div class="product-item">
-				<img src="goods/js.png">
-			<div class="product-list">
-					<h3>Уроки по JS</h3>
-						<p class="price">₽ 260</p>
-						<button class="button">В корзину</button>
+	// Проходимся циклом по массиву и получаем в константу product каждый товар
+	for (let i = 0; i < GOODS.length; i++) {
+		const product = GOODS[i];
+
+		// Заполняем див данными из масива
+		div.insertAdjacentHTML('beforeend', `
+			<div class="product-item">
+					<img src="${product.imgSrc}">
+				<div class="product-list">
+					<h3>${product.name}</h3>
+					<p class="price">₽ ${product.price}</p>
+					<button data-add-in-cart='true' class="button">В корзину</button>
+				</div>
 			</div>
-		</div>
-	</div>
-	`
+		`)
+	}
+
+	return div;
 }
 
 function renderCart() {
@@ -146,12 +137,50 @@ function renderCart() {
 // Вставляем HTML исходя из активной табы
 function renderTabContentId(tabId) {
 	const tabsContainer = document.querySelector('.tabs')
-	let html = '';
 
 	if (tabId === 'goods') {
-		html = renderGoods()
+		const html = renderGoods()
+		tabsContainer.after(html)
 	} else {
-		html = renderCart()
+		const html = renderCart()
+		tabsContainer.insertAdjacentHTML("afterend", html)
 	}
-	tabsContainer.insertAdjacentHTML("afterend", html)
 }
+
+//? Товаты в корзине =================//
+
+const goodsInCart = [];
+const addInCartButtons = document.querySelectorAll('button[data-add-in-cart="true"]')
+// Счетчик товара в корзине (выводится через псевдоэлемент attr в css)
+const tabWithCounter = document.querySelector('button[data-goods-count]')
+
+// Навешиваем события по клику
+addClickListeners(addInCartButtons, addInCartHandler)
+
+// При нажатии по кнопке добав. товар в корзину и увелич. счетчик
+function addInCartHandler() {
+	const product = createProduct()
+	goodsInCart.push(product)
+	tabWithCounter.dataset.goodsCount = goodsInCart.length
+}
+
+// Общая функция для отслеживания кликов
+function addClickListeners(elements, callback) {
+	for (i = 0; i < elements.length; i++) {
+		const element = elements[i]
+		element.addEventListener('click', callback)
+	}
+}
+
+function createProduct() {
+	return {
+		name: 'Уроки по HTML',
+		price: 500,
+	}
+}
+
+
+//?  =================//
+
+
+//console.log(GOODS)
