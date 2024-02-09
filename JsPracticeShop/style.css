@@ -116,7 +116,7 @@ body {
 
 .cart-item {
 	display: grid;
-	grid-template-columns: repeat(3, 1fr);
+	grid-template-columns: repeat(4, 1fr);
 }
 
 .cart-item-price {
@@ -124,7 +124,13 @@ body {
 }
 
 
-
+.cart-item-delete{
+	background-color: red;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	width: 30px;
+}
 
 
 

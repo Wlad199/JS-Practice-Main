@@ -1,4 +1,3 @@
-
 //* Tabs =================//
 
 //const goods = document.querySelector('[data-tab-id = "goods"]')
@@ -46,7 +45,11 @@ if (buttonTabs) {
 //? Original =========================//
 
 const tabs = document.querySelectorAll('button.tab')
-let activeTabId = 'goods';
+let activeTabId = 'cart';
+let goodsInCart = [];
+
+// Счетчик товара в корзине (выводится через псевдоэлемент attr в css)
+const tabWithCounter = document.querySelector('button[data-goods-count]')
 
 // Добавляем изначальный класс
 const initialTab = getActiveTab()
@@ -83,6 +86,8 @@ function removeActiveTabContent() {
 	activeContent.remove()
 }
 
+//todo renderGoods =================//
+
 function renderGoods() {
 
 	// Создаем новый див и добав. ему аттрибуты и классы
@@ -92,76 +97,172 @@ function renderGoods() {
 
 	// Проходимся циклом по массиву и получаем в константу product каждый товар
 	for (let i = 0; i < GOODS.length; i++) {
-		const product = GOODS[i];
+		const product = createProduct(GOODS[i]);
 
-		// Заполняем див данными из масива
-		div.insertAdjacentHTML('beforeend', `
-			<div class="product-item">
-					<img src="${product.imgSrc}">
-				<div class="product-list">
-					<h3>${product.name}</h3>
-					<p class="price">₽ ${product.price}</p>
-					<button data-add-in-cart='true' class="button">В корзину</button>
-				</div>
+		const price = product.price === null
+			? '<p>Товар закончился</p>'
+			: `<p class="price">₽ ${product.price}</p>`;
+
+		// Создаем див с товаром данными из масива
+		const productBlock = document.createElement('div');
+		productBlock.className = 'product-item';
+		productBlock.innerHTML = `
+			<img src="${product.imgSrc}">
+			<div class="product-list">
+				<h3>${product.name}</h3>
+				${price}
 			</div>
-		`)
+		`;
+
+		if (product.price !== null) {
+			const clickHander = addInCartHandler(product)
+
+			// Создаем кнопку
+			const button = document.createElement('button');
+			button.className = 'button';
+			button.textContent = 'В корзину';
+			// По клику  помещаем товар в Cart
+			button.addEventListener('click', clickHander);
+
+			productBlock.querySelector('.product-list').append(button)
+		}
+
+		// Вставляем кнопку
+		div.append(productBlock)
 	}
 
 	return div;
 }
 
+//todo renderCart =================//
+
 function renderCart() {
-	return `
-		<div data-active-tab-content='true' data-show-tab class="cart-items">
-		<div class="cart-item">
-				<div class="cart-item-title">Уроки по HTML</div>
-				<div class="cart-item-count">3шт.</div>
-				<div class="cart-item-price">₽ 150</div>
-		</div>
 
-		<div class="cart-item">
-				<div class="cart-item-title">Уроки по CSS</div>
-				<div class="cart-item-count">1шт.</div>
-				<div class="cart-item-price">₽ 450</div>
-		</div>
+	const container = document.createElement('div');
+	container.dataset.activeTabContent = 'true';
+	container.className = 'cart-items';
 
-		<div class="cart-item">
-				<div class="cart-item-title">Уроки по JS</div>
-				<div class="cart-item-count">6шт.</div>
-				<div class="cart-item-price">₽ 550</div>
-		</div>
-	</div>
-	`
+	for (let i = 0; i < goodsInCart.length; i++) {
+		const product = goodsInCart[i]
+
+		// Создаем карточку товара в корзине
+		const cartItem = document.createElement('div');
+		cartItem.dataset.elementId = product.id
+		cartItem.className = 'cart-item';
+		cartItem.innerHTML = `
+			<div class="cart-item-title">${product.name}</div>
+			<div class="cart-item-count">${product.count} шт.</div>
+			<div class="cart-item-price">₽ ${product.price}</div>
+		`;
+
+		const clickHander = removeInCartHandler(product.id);
+
+		// Создаем кнопку удаления товара из корзины
+		const button = document.createElement('button');
+		button.className = 'cart-item-delete';
+		button.textContent = 'x';
+		button.addEventListener('click', clickHander);
+
+		cartItem.append(button);
+
+		container.append(cartItem);
+	}
+
+	return container;
 }
 
-// Вставляем HTML исходя из активной табы
+//todo Вставляем HTML исходя из активной табы
+
 function renderTabContentId(tabId) {
 	const tabsContainer = document.querySelector('.tabs')
 
+	let html = null;
+
 	if (tabId === 'goods') {
-		const html = renderGoods()
-		tabsContainer.after(html)
+		html = renderGoods()
 	} else {
-		const html = renderCart()
-		tabsContainer.insertAdjacentHTML("afterend", html)
+		html = renderCart()
+	}
+	if (html !== null) {
+		tabsContainer.after(html)
 	}
 }
 
 //? Товаты в корзине =================//
 
-const goodsInCart = [];
-const addInCartButtons = document.querySelectorAll('button[data-add-in-cart="true"]')
-// Счетчик товара в корзине (выводится через псевдоэлемент attr в css)
-const tabWithCounter = document.querySelector('button[data-goods-count]')
-
-// Навешиваем события по клику
-addClickListeners(addInCartButtons, addInCartHandler)
-
 // При нажатии по кнопке добав. товар в корзину и увелич. счетчик
-function addInCartHandler() {
-	const product = createProduct()
-	goodsInCart.push(product)
-	tabWithCounter.dataset.goodsCount = goodsInCart.length
+function addInCartHandler(product) {
+	return () => {
+		let hasProduct = false;
+		let index = null;
+		let count = 1;
+
+		for (let i = 0; i < goodsInCart.length; i++) {
+			const productInCart = goodsInCart[i]
+
+			// Если товар уже есть в корзине
+			if (product.id === productInCart.id) {
+				hasProduct = true;
+				index = i;
+				count = productInCart.count;
+			}
+		}
+
+		// Если товар уже есть в корзине
+		if (hasProduct) {
+			goodsInCart[index].count = count + 1;
+		} else {
+			const productWithCount = product;
+			productWithCount.count = count;
+			goodsInCart.push(productWithCount);
+		}
+
+		let fullSize = 0;
+
+		for (let i = 0; i < goodsInCart.length; i++) {
+			const productInCart = goodsInCart[i]
+			fullSize += productInCart.count;
+		}
+
+		tabWithCounter.dataset.goodsCount = fullSize;
+	}
+}
+
+// При нажатии по кнопке удаляет товар из корзины
+function removeInCartHandler(productId) {
+	return () => {
+		const newGoodsInCart = [];
+
+		for (i = 0; i < goodsInCart.length; i++) {
+			const product = goodsInCart[i];
+
+			if (productId === product.id) {
+				if (product.count > 1) {
+					newGoodsInCart.push({
+						id: product.id,
+						name: product.name,
+						price: product.price,
+						imgSrc: product.imgSrc,
+						count: product.count - 1,
+					})
+				}
+				updateCartItem(product.id, product.count);
+			} else {
+				newGoodsInCart.push(product);
+			}
+		}
+
+		goodsInCart = newGoodsInCart;
+
+		let fullSize = 0;
+
+		for (let i = 0; i < goodsInCart.length; i++) {
+			const productInCart = goodsInCart[i]
+			fullSize += productInCart.count;
+		}
+
+		tabWithCounter.dataset.goodsCount = fullSize;
+	}
 }
 
 // Общая функция для отслеживания кликов
@@ -172,15 +273,25 @@ function addClickListeners(elements, callback) {
 	}
 }
 
-function createProduct() {
+// Вывод контента или сообщений в случае отсутствия контента
+function createProduct(product) {
 	return {
-		name: 'Уроки по HTML',
-		price: 500,
+		id: product.id,
+		name: product.name ? product.name : 'Имя неизвестно',
+		price: product.price ? product.price : null,
+		imgSrc: product.imgSrc ? product.imgSrc : 'goods/defalt.png',
 	}
 }
 
+function updateCartItem(id, count) {
+	const cartItem = document.querySelector(`[data-element-id = '${id}']`)
 
-//?  =================//
+	if (count > 1) {
+		const countElement = cartItem.querySelector('.cart-item-count');
+		countElement.textContent = `${count - 1} шт.`;
+	} else {
+		cartItem.remove();
+	}
 
-
-//console.log(GOODS)
+	console.log(cartItem)
+}
