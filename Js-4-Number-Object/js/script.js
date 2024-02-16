@@ -226,42 +226,133 @@ console.log(data)
 	Развернуть массив
 	Отсортировать массив
 	Обрезать (splice), (slice)
+	Пройтись forEach
+	Преобразовать массив с помощью map (Добавить префикс), (массив длтн) Переписать под цикл
+
+	/  =================//
+
+	Из исходного массива получить массив имён
+	Отфильтровать массив по возрасту больше 18 лет. Переписать под тернарный оператор
+	Отфильтровать массив по имени Nick (find)
+		const myArray = [{
+			name: 'Alex',
+			age: '26',
+		}, {
+			name: 'Nick',
+			age: '17',
+		}, {
+			name: 'Rick',
+			age: '19',
+		},]
+
+/  =================//
+
+	Отфильтровать массив по элементам, начинающимся с 'J'
+	const languages = ["Java", "TypeScript", "C#", "JavaScript", "Julia"]
+
+/  =================//
+
+	Вывести только объект в новый массив (find).
+	Сделать проверку на наличие объекта в массиве (some) (includes)
+	const myArray = [1, 2, '5', true, { name: 'Alex' }]
+
+/  =================//
+
+	Посчитать сумму с помощью for, forEach, reduce
+	Получить ['1', '2', '3', '4', '5', '6', '7']
+
+		const myArray = [1, 2, 3, 4, 5, 6, 7]
+
+/  =================//
+
+	Получить строку из масива (reduce)
+	Получить: {Orange: 'Orange', Apple: 'Apple', Banana: 'Banana'}
+						{name-Orange: 'Orange', name-Apple: 'Apple', name-Banana: 'Banana'}
+
+	const test = ['Orange', 'Apple', 'Banana']
+
+/  =================//
+
+	Сделать однородный массив (через reduce, forEach) (как concat)
+	Склеить в 1 строку
+	const test = [['Orange'], ['Apple'], ['Banana']]
+
+/  =================//
 
 
  Задача №1 (подсказка в файле help.txt)
 		const fromYou = 'lesson,lessons,Для новичков,Для начинающих,Создать сайт,css,css3,Курсы по css';
 		Решение в файле dz.js
 		'#lesson #lessons #для_новичков #для_начинающих #создать_сайт #css #css3 #курсы_по_css';
+
+/  =================//
+
+ Вывести только новости с больше 100 лайков (Использовать ?)
+ Найти людей, которые ее написали.
+ Вывести в виде объекта { id: 2, title: 'Важная новость'}
+	const data = [{
+		id: 1,
+		title: 'Новость дня',
+		author: 'Alex',
+		likes: 50
+	}, {
+		id: 2,
+		title: 'Важная новость',
+		author: 'Anna',
+		likes: 150
+	}, {
+		id: 3,
+		title: 'Важная новость #2',
+		author: 'John',
+		likes: 140
+	},]
+
+/  =================//
+
+ 2. [1,2,3,4,5] => 15 (forEach, reduce)
+
+ 3. ['my', 'name', 'is', 'Alex'] => 'my name is Alex'
+
+ 4. (includes/find/some/filter)
+			const badAge = 20;
+		[15, 10, 20, 30] - тут есть badAge? true/false
+
+ 5.
+	Вывести пользователей (только имена) > 18 лет. (forEach/filter+map)
+
+	[{
+			name: 'Alex',
+			age: 20,
+	}, {
+			name: 'Anna',
+			age: 30,
+	}, {
+			name: 'John',
+			age: 10
+	}]
 	*/
-//const myArray = [1, 2, 3]
-//const myArray2 = [4, 5, 6]
-//const myArray3 = [4, 5, 6, [2, 8, 5], [15, 12, 17]]
 
 
-//console.log(myArray)
+//  ====================================================================================================//
 
-//myArray.push(7, 8, 9)
-//myArray.unshift(0, -1, -2)
 
-//console.log(myArray)
 
-//console.log(myArray[myArray.length - 1])
-//myArray[9] = 'item'
+//const test = [
+//	['Orange'],
+//	['Apple'],
+//	['Banana']
+//]
 
-//const lastEl = myArray.pop()
+//const test2 = [];
 
-//console.log(myArray)
-//console.log(lastEl)
+//test.forEach((elem) => {
+//	test2.push(elem[0]);
+//})
 
-//const final = myArray.concat(myArray2)
-//console.log(final.includes(3))
+//const test2 = test.reduce((acc, elem) => {
+//	acc.push(elem[0])
+//	return acc
+//}, [])
 
-//const fio = 'John Petrovich Anderson'
 
-//const fioArr = fio.split(' ')
-
-//console.log(myArray3)
-
-//const myArray4 = myArray3.flat()
-//console.log(myArray4)
-
+//console.log(test2)
