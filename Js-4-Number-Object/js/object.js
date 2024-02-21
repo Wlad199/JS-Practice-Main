@@ -1,4 +1,7 @@
 /*
+ Object
+ Object.values, Object.entries, for in, toString, JSON.parse, JSON.stringify, Object.keys
+
 Объекты
 	const user = {name: 'alex',age: 18,}
 	Найти name в user с помощью in. Сделать условие и вывести в консоль
