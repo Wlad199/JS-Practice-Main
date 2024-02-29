@@ -1,358 +1,138 @@
-/*
-1. Числа
-	Округлить в большую, меньшую сторону и до целого
-	Округлить до 3 знаков после запятой
-	Перевести строку в число
-	Вывести тип данных
-	Перевести строку 9.99px в число, отбросив буквы с сохранением знаков после запятой и без
-	Возвести число в степень через Math и *
-	Проверить на NaN
-	Проверить на целое число
-	Получить рандомное число, округлить.
-	Получить рандомное число от 1 до 10
+/* (https://doka.guide/tools/web-app-works/)
+API (Application Programming Interface) — это набор фич, которые одна программа представляет всем остальным.
+API может использоваться не только для общения браузера и сервера, но и в принципе для общения разных программ друг с другом.
 
-2. Строки
-	Перевести число в строку
-	Получить длину строки
-	Привести к верхнему и нижнему регистру
-	Привести нижнему регистру и сделать первую букву заглавной
-	Сделать равенство верным "PassWord" === "password"
-	Вывести символ "*" 6 раз с помтщью repeat
-	Проверить на наличие символа (-), (s), (S) в const someString = 'There is - something stting' С помощью indexOf & lastIndexOf
-	Вывести символ под номером 5 в строке charAt
-	Проверить на наличие символа (.com) https://neprivet.com/ через ncludes
-	Проверить начинается ли строка с символа (startsWith) и заканчивается (endsWith)
-	Обрезать строку (   someText    ) с помощью slice и сравнить со строкой someText
-	Обрезать пробелы (   someText    )
-	Убрать тирэ и () из номера (8(800)555-35-35). nomber.replaceAll().replaceAll()
+REST (Representational State Transfer) — стиль общения компонентов, при котором все необходимые данные указываются в параметрах запроса.
+REST сейчас — один из самых распространённых стилей API в интернете.
+Всё взаимодействие между клиентом и сервером сводится к 4 операциям (CRUD):
+	созданию чего-либо, например, объекта пользователя (create, C);
+	чтению (read, R);
+	обновлению (update, U);
+	удалению (delete, D).
 
-3.Объект
-	const user = {name: 'alex',age: 18,}
-	Найти name в user с помощью in. Сделать условие и вывести в консоль
-	Переписать на hasOwnProperty
-	Преобразовать в строку
-	Преобразовать в объект
-	Вывести ключи и свойства (for..in)
-	Получить ключи в массив (Object.keys)
-	Получить значения в массив (Object.values)
-	Получить значения и ключи в массив
-	Вывести все ключи и значения циклом
+SOAP (Simple Object Access Protocol) — формат обмена данными.
+Это структурированный формат обмена данными, то есть каждое сообщение следует определённой структуре.
+Чаще всего вместе с SOAP используется XML для отражения этой структуры.
+SOAP неважно, каким методом передавать сообщения, в отличие от REST.
+Структура выглядит так:
+	Envelope — корневой элемент, который определяет само сообщение.
+	Header содержит атрибуты сообщения, например: информацию о безопасности.
+	Body содержит сообщение, которым обмениваются приложения.
+	Fault необязательный элемент с ошибками обработки, если они были.
 
-	const user = {
-	name: 'alex',
-	age: 18,
-	state: 0,
-	family: {
-		dad: {
-			name: 'oldMan'
-		},
-		mom: {
-			name: 'oldWoman'
-		}
-	}
-}
+AJAX (Asynchronous JavaScript and XML) — общение между клиентом и сервером без перезагрузки страницы.
 
-/  =================//
-	Создать функцию, в которую можно передать название объекта и получить
- У {user.name + user.surname} {family.length} член(-а/-ов) семьи.
- Отец - {dad.name + dad.surname} (возраст не известен).
- Мать - {mom.name + mom.surname} (возраст не известен).
- Брат - {brother.name + brother.surname} ({brother.age} лет).
- Если каких то членов семьи нет, то не выводить
+MVC (Model-View-Controller) — структура приложения, в которой за данные, их обработку и их вывод отвечают три разных сущности.
+Модель (model) отвечает за данные и их структуру.
+Представление (view) — за их отображение.
+Контроллер (controller) — за их обработку.
 
-const userInformation = {
-	name: 'Иван',
-	surname: 'Иванов',
-	age: 15,
-	family: {
-			dad: {
-					name: 'Александр',
-					surname: 'Иванов',
-					age: undefined,
-			},
-				mom: {
-					name: 'Наталья',
-					surname: 'Иванова',
-			},
-				brother: {
-					name: 'Константин',
-					surname: 'Иванов',
-					age: '10',
-			},
-			sister: {
-					name: 'Константин',
-					surname: 'Иванов',
-					age: '10',
-			},
-	}
-}
-*/
+JSON — один из самых популярных форматов данных. Он немногословен, понятен и человеку, и компьютеру, много языков с ним уже умеют работать.
+В вебе JSON, можно сказать, стандарт, потому что используется как формат по умолчанию во многих фреймворках.
 
-/*
+fetch()
+На уровне приложения мы используем встроенное браузерное API, а именно — fetch().
+Это глобальный метод для отправки запросов.
 
-const user = {
-	name: 'alex',
-	age: 18,
-	state: 0,
-	family: {
-		dad: {
-			name: 'oldMan'
-		},
-		mom: {
-			name: 'oldWoman'
-		}
-	}
-}
+const response = await fetch('/api/save-text', {
+	method: 'POST',
+	body: JSON.stringify(State),
+})
 
-if (user.hasOwnProperty('name')) {
-	console.log('yes')
-} else {
-	console.log('no')
-}
+Поле method — это так называемый HTTP-глагол.
+HTTP-методы:
+	POST для создания;
+	GET для чтения;
+	PUT обновляет объект целиком;
+	DELETE для удаления.
 
-const newUser = JSON.stringify(user)
-console.log(typeof newUser)
+HTTP (HyperText Transfer Protocol — протокол передачи гипертекста) работает с текстовыми сообщениями,
+	которые пересылаются от клиента к серверу (HTTP-запрос) и обратно (HTTP-ответ).
+Структура сообщения следующая:
+	Стартовая строка (Starting line) говорит нам, запрос или ответ содержит сообщение;
+	Заголовки (Headers) описывают тело сообщения, параметры передачи и прочие сведения;
+	Тело сообщения (Message Body) содержит данные.
+HTTP был разработан как протокол обмена данными между веб-сервером и веб-браузером.
+Код состояния в ответе сервера содержит информацию о результате обработки данных.
+Существует пять классов кодов состояний:
 
-for (let i in user) {
-	let key = i;
-	let value = user[i];
-	console.log('Key: ' + key + ' Value: ' + value)
-}
+	1xx — обработка данных на сервере продолжается;
+	2xx — успешная обработка данных;
+	3xx — перенаправление запросов;
+	4xx — ошибка по вине клиента;
+	5xx — ошибка по вине сервера.
 
-console.log(Object.keys(user.family))
-console.log(Object.values(user))
-console.log(Object.entries(user))
-
-const entries = Object.entries(user);
-
-for (let i = 0; i < entries.length; i++) {
-	const entry = entries[i];
-	const key = entry[0];
-	const value = entry[1];
-	console.log(key, value);
-}
-*/
-
-//Создать функцию, в которую можно передать название объекта и получить
-//У {user.name + user.surname} {family.length} член(-а/-ов) семьи.
-//Отец - {dad.name + dad.surname} (возраст не известен).
-//Мать - {mom.name + mom.surname} (возраст не известен).
-//Брат - {brother.name + brother.surname} ({brother.age} лет).
-//Если каких то членов семьи нет, то не выводить
-/*
-const userInformation = {
-	name: 'Иван',
-	surname: 'Иванов',
-	age: 15,
-	family: {
-		dad: {
-			name: 'Александр',
-			surname: 'Иванов',
-			age: undefined,
-		},
-		mom: {
-			name: 'Наталья',
-			surname: 'Иванова',
-		},
-		brother: {
-			name: 'Константин',
-			surname: 'Иванов',
-			age: '10',
-		},
-		sister: {
-			name: 'Анастасия',
-			surname: 'Иванова',
-			age: 20,
-		},
-	}
-}
-
-const listOfFamily = {
-	dad: 'Отец',
-	mom: 'Мать',
-	brother: 'Брат',
-	//sister: 'Сестра',
-}
-
-function showInfo(user) {
-
-	let str = `У ${user.name} ${user.surname}`;
-	let family = ''
-	let sizeOfFamily = ''
-
-	// Через for in получаем ключи объекта
-	for (let familyMember in user.family) {
-
-		const data = user.family[familyMember];
-		const memeber = listOfFamily[familyMember];
-
-		if (memeber) {
-			family += ` ${memeber} - ${data.name} ${data.surname}`
-			sizeOfFamily++
-		} else {
-			console.warn(`Добавьте ${familyMember} в словарь`);
-		}
-
-		if (
-			typeof data.age === 'number' ||
-			typeof data.age === 'string'
-		) {
-			family += ` (${data.age} лет)`
-		} else {
-			family += ` (возраст неизвестен)`
-		}
-	}
-
-	str += ` ${sizeOfFamily} членов семьи ${family}`
-
-	return str
-}
-
-const data = showInfo(userInformation)
-console.log(data)
 
 */
 /*
+const newPost = {
+	"userId": 10,
+	"id": 777,
+	"title": "Hello!",
+	"body": "some text",
+}
 
-4. Массивы
-
-	Создать массив
-	Добавить/удалить жлементы в начало/конец (строки, булевые, числа, объекты)
-	Проверить на тип массива
-	Сложить массивы (concat)
-	Проверить начичие элемента внутри
-	Разбить строку на масив и обратно
-	Создать массив с вложенными массивами и преобразовать в однородный (2 вложенность)
-	Развернуть массив
-	Отсортировать массив
-	Обрезать (splice), (slice)
-	Пройтись forEach
-	Преобразовать массив с помощью map (Добавить префикс), (массив длтн) Переписать под цикл
-
-	/  =================//
-
-	Из исходного массива получить массив имён
-	Отфильтровать массив по возрасту больше 18 лет. Переписать под тернарный оператор
-	Отфильтровать массив по имени Nick (find)
-		const myArray = [{
-			name: 'Alex',
-			age: '26',
-		}, {
-			name: 'Nick',
-			age: '17',
-		}, {
-			name: 'Rick',
-			age: '19',
-		},]
-
-/  =================//
-
-	Отфильтровать массив по элементам, начинающимся с 'J'
-	const languages = ["Java", "TypeScript", "C#", "JavaScript", "Julia"]
-
-/  =================//
-
-	Вывести только объект в новый массив (find).
-	Сделать проверку на наличие объекта в массиве (some) (includes)
-	const myArray = [1, 2, '5', true, { name: 'Alex' }]
-
-/  =================//
-
-	Посчитать сумму с помощью for, forEach, reduce
-	Получить ['1', '2', '3', '4', '5', '6', '7']
-
-		const myArray = [1, 2, 3, 4, 5, 6, 7]
-
-/  =================//
-
-	Получить строку из масива (reduce)
-	Получить: {Orange: 'Orange', Apple: 'Apple', Banana: 'Banana'}
-						{name-Orange: 'Orange', name-Apple: 'Apple', name-Banana: 'Banana'}
-
-	const test = ['Orange', 'Apple', 'Banana']
-
-/  =================//
-
-	Сделать однородный массив (через reduce, forEach) (как concat)
-	Склеить в 1 строку
-	const test = [['Orange'], ['Apple'], ['Banana']]
-
-/  =================//
+const test = JSON.stringify(newPost)
+//console.log(test)
 
 
- Задача №1 (подсказка в файле help.txt)
-		const fromYou = 'lesson,lessons,Для новичков,Для начинающих,Создать сайт,css,css3,Курсы по css';
-		Решение в файле dz.js
-		'#lesson #lessons #для_новичков #для_начинающих #создать_сайт #css #css3 #курсы_по_css';
+fetch('https://jsonplaceholder.typicode.com/posts', {
+	method: 'GET',
+	//body: test,
+})
+	.then((data) => {
+		console.log(data)
+		return data.json()
+	}).then((info) => {
+		console.log(info)
+		for (let i = 0; i < info.length; i++) {
+			console.log(info[i].body)
+		}
+	})
+*/
 
-/  =================//
+//? get weather =================//
+/* ( jsonplaceholder.typicode.com)
+1. Сделать запрос на сайт погоды (open-meteo.com/en/docs)
+	Получить данные и вывести их в документ
+	(В Ярославле: -0.4 градусов Скорость ветра: 8 м/с Сейчас: День Атмосферное давление: 1010.1 Pa)
+*/
+const url = `https://api.open-meteo.com/v1/forecast?
+	latitude=57.61&
+	longitude=39.83&
+	current=temperature_2m,is_day,surface_pressure,wind_speed_10m&hourly=
+`;
 
- Вывести только новости с больше 100 лайков (Использовать ?)
- Найти людей, которые ее написали.
- Вывести в виде объекта { id: 2, title: 'Важная новость'}
-	const data = [{
-		id: 1,
-		title: 'Новость дня',
-		author: 'Alex',
-		likes: 50
-	}, {
-		id: 2,
-		title: 'Важная новость',
-		author: 'Anna',
-		likes: 150
-	}, {
-		id: 3,
-		title: 'Важная новость #2',
-		author: 'John',
-		likes: 140
-	},]
+fetch(url, {
+	method: 'GET',
+}).then((data) => {
+	return data.json()
+}).then((info) => {
+	console.log(info)
+	const current = info.current;
+	renderWeather(current.temperature_2m, current.wind_speed_10m, current.is_day, current.surface_pressure)
+})
 
-/  =================//
+function renderWeather(temp, speed, isDay, pressure) {
+	const div = document.createElement('div');
+	div.textContent = `В Ярославле: ${temp} градусов`;
+	document.body.append(div);
 
- 2. [1,2,3,4,5] => 15 (forEach, reduce)
+	const div2 = document.createElement('div');
+	div2.textContent = `Скорость ветра: ${speed} м/с`;
+	document.body.append(div2);
 
- 3. ['my', 'name', 'is', 'Alex'] => 'my name is Alex'
+	let day;
+	if (isDay) {
+		day = 'День'
+	} else {
+		day = 'Ночь'
+	}
+	const div3 = document.createElement('div');
+	div3.textContent = `Сейчас: ${day}`;
+	document.body.append(div3);
 
- 4. (includes/find/some/filter)
-			const badAge = 20;
-		[15, 10, 20, 30] - тут есть badAge? true/false
-
- 5.
-	Вывести пользователей (только имена) > 18 лет. (forEach/filter+map)
-
-	[{
-			name: 'Alex',
-			age: 20,
-	}, {
-			name: 'Anna',
-			age: 30,
-	}, {
-			name: 'John',
-			age: 10
-	}]
-	*/
-
-
-//  ====================================================================================================//
-
-
-
-//const test = [
-//	['Orange'],
-//	['Apple'],
-//	['Banana']
-//]
-
-//const test2 = [];
-
-//test.forEach((elem) => {
-//	test2.push(elem[0]);
-//})
-
-//const test2 = test.reduce((acc, elem) => {
-//	acc.push(elem[0])
-//	return acc
-//}, [])
-
-
-//console.log(test2)
+	const div4 = document.createElement('div')
+	div4.textContent = `Атмосферное давление: ${pressure} Pa`
+	document.body.append(div4)
+}
